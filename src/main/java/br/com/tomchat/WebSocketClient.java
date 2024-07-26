@@ -1,4 +1,4 @@
-package tomchat;
+package br.com.tomchat;
 
 import java.io.IOException;
 import java.net.URI;
@@ -15,7 +15,7 @@ import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
 @ClientEndpoint
-public class Client {
+public class WebSocketClient {
 	
 	public void connectToServer() throws DeploymentException, IOException {
 		WebSocketContainer container = ContainerProvider.getWebSocketContainer();

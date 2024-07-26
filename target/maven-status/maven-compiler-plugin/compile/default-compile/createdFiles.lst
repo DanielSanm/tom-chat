@@ -1,0 +1,3 @@
+br\com\tomchat\RoomServlet.class
+br\com\tomchat\WebSocketServer.class
+br\com\tomchat\WebSocketClient.class

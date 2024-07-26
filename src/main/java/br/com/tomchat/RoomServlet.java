@@ -1,4 +1,4 @@
-package tomchat;
+package br.com.tomchat;
 
 import java.io.IOException;
 
@@ -10,21 +10,21 @@ import javax.servlet.http.HttpServletResponse;
 import javax.websocket.DeploymentException;
 
 @WebServlet("/room")
-public class MainServlet extends HttpServlet {
+public class RoomServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 328084198563966725L;
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse res) 
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
 			throws IOException, ServletException  {
-		
-		System.out.println("\nservlet get");
-		Client c = new Client();
+		WebSocketClient client = new WebSocketClient();
 		
 		try {
-			c.connectToServer();
+			client.connectToServer();
 		} catch (DeploymentException | IOException e) {
 			e.printStackTrace();
 		}
+		
+		req.getRequestDispatcher("/room.jsp").forward(req, resp);
 	}
 }

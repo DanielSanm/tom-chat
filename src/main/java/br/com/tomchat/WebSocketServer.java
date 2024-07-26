@@ -1,4 +1,4 @@
-package tomchat;
+package br.com.tomchat;
 
 import java.io.IOException;
 
@@ -11,7 +11,7 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 @ServerEndpoint("/websocket")
-public class Server {
+public class WebSocketServer {
 	
 	@OnMessage
 	public void messageReceiver(String message, Session session) {
