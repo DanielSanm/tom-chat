@@ -5,6 +5,7 @@ import java.net.URI;
 
 import jakarta.websocket.ClientEndpoint;
 import jakarta.websocket.CloseReason;
+import jakarta.websocket.CloseReason.CloseCodes;
 import jakarta.websocket.ContainerProvider;
 import jakarta.websocket.DeploymentException;
 import jakarta.websocket.OnClose;
@@ -19,10 +20,25 @@ import jakarta.websocket.WebSocketContainer;
 @ClientEndpoint
 public class WebSocketClient {
 	
+	private Session mSession;
+	
 	public void connectToServer() throws DeploymentException, IOException {
 		WebSocketContainer container = ContainerProvider.getWebSocketContainer();
 		String uri = "ws://localhost:8080/tomchat/websocket";
 		container.connectToServer(this, URI.create(uri));
+	}
+	
+	public void sendMessage(String message) {
+		try {
+			System.out.println("Client("+ mSession.getId() + ") Message: " + message);
+			mSession.getBasicRemote().sendText(message);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void closeClient() {
+		this.close(new CloseReason(CloseCodes.NORMAL_CLOSURE, "finished"));
 	}
 	
 	@OnMessage
@@ -32,12 +48,7 @@ public class WebSocketClient {
 
 	@OnOpen
 	public void open(Session session) {
-		try {
-			session.getBasicRemote().sendText("sending from client");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+		mSession = session;
 		System.out.println("Client handshake");
 	}
 

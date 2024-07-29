@@ -15,7 +15,7 @@ public class WebSocketServer {
 	
 	@OnMessage
 	public void messageReceiver(String message, Session session) {
-		System.out.println("Message received (server): " + message);
+		System.out.println("Message received from Client(" + session.getId() + "): " + message);
 		try {
 			session.getBasicRemote().sendText("message received on server");
 		} catch (IOException e) {
@@ -25,7 +25,8 @@ public class WebSocketServer {
 	
 	@OnOpen
 	public void open(Session session) {
-		System.out.println("Server handshake");
+		String id = session.getId();
+		System.out.println("Server handshake; Client id: " + id);
 	}
 	
 	@OnClose
