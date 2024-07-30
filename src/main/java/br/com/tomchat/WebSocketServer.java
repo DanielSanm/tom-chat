@@ -1,8 +1,8 @@
 package br.com.tomchat;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import jakarta.websocket.CloseReason;
 import jakarta.websocket.OnClose;
@@ -16,12 +16,14 @@ import jakarta.websocket.server.ServerEndpoint;
 public class WebSocketServer {
 	
 	private final SessionService sessionService = new SessionService();
-	List<String> messageStack = new ArrayList<>();
+	
+	public static final List<String> messageStack = new CopyOnWriteArrayList<>();
 	
 	@OnMessage
 	public void messageReceiver(String message, Session session) {
 		System.out.println("Message received from Client(" + session.getId() + "): " + message);
 		messageStack.add(message);
+		
 		try {
 			session.getBasicRemote().sendText("message received on server");
 		} catch (IOException e) {
@@ -33,12 +35,13 @@ public class WebSocketServer {
 	public void open(Session session) {
 		String id = session.getId();
 		System.out.println("Server handshake; Client id: " + id);
-		
+		sessionService.addSession(session);		
 	}
 	
 	@OnClose
-	public void close(CloseReason reason) {
+	public void close(Session session, CloseReason reason) {
 		System.out.println(reason.getReasonPhrase());
+		sessionService.removeSession(session);
 	}
 	
 	@OnError

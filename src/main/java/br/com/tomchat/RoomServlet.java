@@ -16,25 +16,11 @@ import jakarta.websocket.DeploymentException;
 public class RoomServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 328084198563966725L;
-	private WebSocketClient mClient;
-	
-	public WebSocketClient getClient() {
-		if (mClient == null) {
-			return new WebSocketClient();
-		}
-		
-		return mClient;	
-	}
 	
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
 			throws IOException, ServletException  {
-//		try {
-//			getClient().connectToServer();
-//		} catch (DeploymentException | IOException e) {
-//			e.printStackTrace();
-//		}
-//		
-//		req.setAttribute("client", getClient());
+		
+		req.setAttribute("messages", WebSocketServer.messageStack);
 		req.getRequestDispatcher("room.jsp").forward(req, resp);
 	}
 }

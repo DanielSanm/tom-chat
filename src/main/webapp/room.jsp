@@ -1,3 +1,4 @@
+<%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <html>
@@ -32,6 +33,7 @@
 	border: 2px solid #D3D3D3;
 	border-radius: 5px;
 	margin-top: 10px;
+	border-radius: 5px;
 }
 
 #balloon-container {
@@ -54,7 +56,18 @@
 <body>
 	<div id="container">
 
-		<div id="balloon-container"></div>
+		<div id="balloon-container">
+			<%
+				List<String> messages = (List<String>) request.getAttribute("messages");
+				if (messages != null) {
+					for (String message: messages) {
+			%>
+					<div class="balloon"><%= message %></div>
+			<%
+					}
+				}
+			%>
+		</div>
 
 		<input placeholder="type something..." id="text-box" type="text" />
 

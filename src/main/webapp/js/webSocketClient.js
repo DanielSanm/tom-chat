@@ -2,7 +2,7 @@ let socket;
 const ballonContainer = document.querySelector('#balloon-container')
 
 function connect() {
-	socket = new WebSocket("ws://localhost:8080/tomchat/websocket");
+	socket = new WebSocket("ws://10.100.101.12:8080/tomchat/websocket");
 
 	socket.onmessage = (event) => {
 		console.log(event.data);

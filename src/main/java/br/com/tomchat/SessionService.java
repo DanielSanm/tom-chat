@@ -1,7 +1,5 @@
 package br.com.tomchat;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,6 +15,7 @@ public class SessionService {
 	
 	public void addSession(Session session) {
 		sessionPool.put(session.getId(), session);
+		System.out.println("sessionPool size: " + sessionPool.size());
 	}
 	
 	public void removeSession(Session session) {
