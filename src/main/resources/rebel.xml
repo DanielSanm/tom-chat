@@ -7,15 +7,15 @@
 <application generated-by="eclipse" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.zeroturnaround.com" xsi:schemaLocation="http://www.zeroturnaround.com http://update.zeroturnaround.com/jrebel/rebel-2_1.xsd">
 
 	<classpath>
-		<dir name="C:/Users/Daniel-Desenvolvimen/eclipse-workspace/tomchat/target/classes">
+		<dir name="/home/daniel/Documentos/Java Eclipse/tom-chat/target/classes">
 		</dir>
-		<dir name="C:/Users/Daniel-Desenvolvimen/eclipse-workspace/tomchat/target/test-classes">
+		<dir name="/home/daniel/Documentos/Java Eclipse/tom-chat/target/test-classes">
 		</dir>
 	</classpath>
 
 	<web>
 		<link target="/">
-			<dir name="C:/Users/Daniel-Desenvolvimen/eclipse-workspace/tomchat/src/main/webapp">
+			<dir name="/home/daniel/Documentos/Java Eclipse/tom-chat/src/main/webapp">
 			</dir>
 		</link>
 	</web>

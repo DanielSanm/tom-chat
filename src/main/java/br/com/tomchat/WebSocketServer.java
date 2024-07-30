@@ -1,6 +1,8 @@
 package br.com.tomchat;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.websocket.CloseReason;
 import jakarta.websocket.OnClose;
@@ -13,9 +15,13 @@ import jakarta.websocket.server.ServerEndpoint;
 @ServerEndpoint("/websocket")
 public class WebSocketServer {
 	
+	private final SessionService sessionService = new SessionService();
+	List<String> messageStack = new ArrayList<>();
+	
 	@OnMessage
 	public void messageReceiver(String message, Session session) {
 		System.out.println("Message received from Client(" + session.getId() + "): " + message);
+		messageStack.add(message);
 		try {
 			session.getBasicRemote().sendText("message received on server");
 		} catch (IOException e) {
@@ -27,6 +33,7 @@ public class WebSocketServer {
 	public void open(Session session) {
 		String id = session.getId();
 		System.out.println("Server handshake; Client id: " + id);
+		
 	}
 	
 	@OnClose
