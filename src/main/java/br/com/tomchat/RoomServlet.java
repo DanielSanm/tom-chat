@@ -20,7 +20,6 @@ public class RoomServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) 
 			throws IOException, ServletException  {
 		
-		req.setAttribute("messages", WebSocketServer.messageStack);
 		req.getRequestDispatcher("room.jsp").forward(req, resp);
 	}
 }

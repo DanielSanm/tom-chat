@@ -5,11 +5,15 @@ function connect() {
 	socket = new WebSocket("ws://10.100.101.12:8080/tomchat/websocket");
 
 	socket.onmessage = (event) => {
-		console.log(event.data);
+		clearMessages()
+		const messages = JSON.parse(event.data)
+		for (const message of messages) {
+			displayMessage(message)
+		}
 	};
 
 	socket.onopen = () => {
-
+		
 	};
 
 	socket.onclose = () => {
@@ -29,15 +33,17 @@ function displayMessage(message) {
 	ballonContainer.scrollTop = ballonContainer.scrollHeight
 }
 
+function clearMessages() {
+	ballonContainer.innerHTML = ''
+}
+
 document.querySelector("#text-box").addEventListener("keydown", (e) => {
 	if (e.key === "Enter") {
 		const message = e.target.value;
 
-		if (message !== '') {
-			socket.send(message);
-			displayMessage(message)
-			e.target.value = "";
-		}
+		if (message !== '') socket.send(message)
+		
+		e.target.value = "";
 
 	}
 });
