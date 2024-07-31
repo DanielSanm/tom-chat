@@ -18,11 +18,11 @@ import jakarta.websocket.server.ServerEndpoint;
 
 @ServerEndpoint("/websocket")
 public class WebSocketServer {
-	
+
 	private static Set<Session> clientPool = new CopyOnWriteArraySet<Session>();
 	public static Queue<String> messageQueue = new ConcurrentLinkedQueue<>();
 	private final Gson gson = new Gson();
-	
+
 	public void broadcast() {
 		try {
 			for (Session client : clientPool) {
@@ -32,28 +32,28 @@ public class WebSocketServer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@OnMessage
 	public void messageReceiver(String message, Session session) {
 		System.out.println("SERVER = Message received from client(" + session.getId() + "): " + message);
 		messageQueue.add(message);
 		broadcast();
 	}
-	
+
 	@OnOpen
 	public void open(Session session) {
-		System.out.println("SERVER = Client("+ session.getId() +") connected!");
+		System.out.println("SERVER = Client(" + session.getId() + ") connected!");
 		clientPool.add(session);
 		broadcast();
 		System.out.println("SERVER = Connected clients: " + clientPool.size());
 	}
-	
+
 	@OnClose
 	public void close(Session session, CloseReason reason) {
 		System.out.println("SERVER = Client(" + session.getId() + ") closed: " + reason.getCloseCode().toString());
 		clientPool.remove(session);
 	}
-	
+
 	@OnError
 	public void error(Throwable t) {
 		t.printStackTrace();

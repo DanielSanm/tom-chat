@@ -1,4 +1,4 @@
-<%@ page import="java.util.List" %>
+<%@ page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <html>
@@ -56,18 +56,7 @@
 <body>
 	<div id="container">
 
-		<div id="balloon-container">
-			<%
-				List<String> messages = (List<String>) request.getAttribute("messages");
-				if (messages != null) {
-					for (String message: messages) {
-			%>
-					<div class="balloon"><%= message %></div>
-			<%
-					}
-				}
-			%>
-		</div>
+		<div id="balloon-container"></div>
 
 		<input placeholder="type something..." id="text-box" type="text" />
 
