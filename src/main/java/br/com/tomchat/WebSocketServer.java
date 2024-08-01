@@ -23,35 +23,38 @@ public class WebSocketServer {
 	public static Queue<String> messageQueue = new ConcurrentLinkedQueue<>();
 	private final Gson gson = new Gson();
 
-	public void broadcast() {
-		try {
-			for (Session client : clientPool) {
-				client.getBasicRemote().sendText(gson.toJson(messageQueue));
+	public <T> void sendMessage(Message<T> message) {
+		for (Session session : clientPool) {
+			try {
+				String json = gson.toJson(message);
+				System.out.println("SERVER = Message to clients: " + json);
+				session.getBasicRemote().sendText(json);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
 	@OnMessage
 	public void messageReceiver(String message, Session session) {
-		System.out.println("SERVER = Message received from client(" + session.getId() + "): " + message);
 		messageQueue.add(message);
-		broadcast();
+		System.out.println("SERVER = Message from client(" + session.getId() + "): " + message);
+		sendMessage(new Message<>("message", message));
 	}
 
 	@OnOpen
 	public void open(Session session) {
 		System.out.println("SERVER = Client(" + session.getId() + ") connected!");
 		clientPool.add(session);
-		broadcast();
-		System.out.println("SERVER = Connected clients: " + clientPool.size());
+		sendMessage(new Message<>("history", messageQueue));
+		sendMessage(new Message<>("client-count", clientPool.size()));
 	}
 
 	@OnClose
 	public void close(Session session, CloseReason reason) {
 		System.out.println("SERVER = Client(" + session.getId() + ") closed: " + reason.getCloseCode().toString());
 		clientPool.remove(session);
+		sendMessage(new Message<>("client-count", clientPool.size()));
 	}
 
 	@OnError
