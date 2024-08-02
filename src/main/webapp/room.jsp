@@ -94,12 +94,28 @@ header #date {
 }
 
 .balloon {
+	display: flex;
+	flex-direction: column;
 	background: #C8C8C8;
 	padding: 12px;
 	margin: 5px;
 	border-radius: 10px;
 	align-self: flex-start;
 	z-index: 2;
+}
+
+.balloon #client-id {
+	font-size: 0.75rem;
+	
+}
+
+.balloon #text {
+	font-weight: 500;
+}
+
+.balloon #datetime {
+	font-size: 0.75rem;
+	text-align: end;
 }
 </style>
 <body>
@@ -116,10 +132,16 @@ header #date {
 			<div id="date"></div>
 		</header>
 
-		<section id="balloon-container"></section>
+		<section id="balloon-container">
+			<!-- <div class="balloon">
+				<span id="client-id">Client 01</span>
+				<span id="text">ola tudo bem!</span>
+				<span id="datetime">02/08 11:50</span>
+			</div> -->
+		</section>
 
 		<input placeholder="type something..." id="text-box" type="text" />
-
+		<script type="text/javascript" src="js/libs/luxon.min.js"></script>
 		<script type="text/javascript" src="js/webSocketClient.js"></script>
 	</main>
 </body>

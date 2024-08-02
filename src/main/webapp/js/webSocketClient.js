@@ -1,16 +1,15 @@
 let socket
-const ballonContainer = document.querySelector("#balloon-container")
 
 async function connect() {
-	
+
 	const serverIp = await fetch('/tomchat/env')
-					.then(response => response.json())
-					.then(data => data.serverIp)
-					.catch(error => {
-						console.error('Error: ' + error)
-						return 'localhost'
-					})
-	
+		.then(response => response.json())
+		.then(data => data.serverIp)
+		.catch(error => {
+			console.error('Error: ' + error)
+			return 'localhost'
+		})
+
 	socket = new WebSocket(`ws://${serverIp}:8080/tomchat/websocket`)
 
 	socket.onmessage = (event) => {
@@ -43,16 +42,39 @@ async function connect() {
 
 	socket.onerror = () => {
 		console.error("client error")
-	}	
+	}
 }
 
+const { DateTime } = luxon
+const ballonContainer = document.querySelector("#balloon-container")
+let balloon
 
 function displayMessage(message) {
-	const balloon = document.createElement("div")
+
+	balloon = document.createElement("div")
 	balloon.classList.add("balloon")
-	balloon.innerText = message
+
+	appendBalloonItem("client-id", `Guest ${message.clientId}`)
+	appendBalloonItem("text", message.text)
+
+	const timeZoneMatch = message.datetime.match(/\[(.*?)\]$/);
+	const timeZone = timeZoneMatch ? timeZoneMatch[1] : 'UTC';
+	// Removendo a parte do fuso horário para parsear a string ISO
+	const isoString = message.datetime.replace(/\[.*?\]$/, '');
+	// Parse the ZonedDateTime string using Luxon
+	const zonedDateTime = DateTime.fromISO(isoString, { zone: timeZone }).toFormat('dd/MM HH:mm');
+	
+	appendBalloonItem("datetime", zonedDateTime)
+
 	ballonContainer.appendChild(balloon)
 	ballonContainer.scrollTop = ballonContainer.scrollHeight
+}
+
+function appendBalloonItem(id, text) {
+	const span = document.createElement("span")
+	span.setAttribute("id", id)
+	span.innerText = text
+	balloon.appendChild(span)
 }
 
 function clearMessages() {
@@ -71,7 +93,7 @@ clock()
 document.querySelector("#text-box").addEventListener("keydown", (e) => {
 	if (e.key === "Enter") {
 		const message = e.target.value
-		
+
 		if (message !== "") socket.send(message)
 
 		e.target.value = ""

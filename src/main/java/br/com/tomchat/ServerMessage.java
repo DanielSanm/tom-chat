@@ -1,11 +1,11 @@
 package br.com.tomchat;
 
-public class Message<T> {
+public class ServerMessage<T> {
 
 	private String type;
 	private T content;
 	
-	public Message(String type, T content) {
+	public ServerMessage(String type, T content) {
 		this.type = type;
 		this.content = content;
 	}

@@ -1,6 +1,7 @@
 package br.com.tomchat;
 
 import java.io.IOException;
+import java.time.ZonedDateTime;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -19,11 +20,11 @@ import jakarta.websocket.server.ServerEndpoint;
 @ServerEndpoint("/websocket")
 public class WebSocketServer {
 
-	private static Set<Session> clientPool = new CopyOnWriteArraySet<Session>();
-	public static Queue<String> messageQueue = new ConcurrentLinkedQueue<>();
+	private static Set<Session> clientPool = new CopyOnWriteArraySet<>();
+	public static Queue<ClientMessage> messageQueue = new ConcurrentLinkedQueue<>();
 	private final Gson gson = new Gson();
 
-	public <T> void sendMessage(Message<T> message) {
+	public <T> void sendMessage(Class <T> message) {
 		for (Session session : clientPool) {
 			try {
 				String json = gson.toJson(message);
@@ -37,24 +38,25 @@ public class WebSocketServer {
 
 	@OnMessage
 	public void messageReceiver(String message, Session session) {
-		messageQueue.add(message);
-		System.out.println("SERVER = Message from client(" + session.getId() + "): " + message);
-		sendMessage(new Message<>("message", message));
+		ClientMessage msg = new ClientMessage(session.getId(),	message, ZonedDateTime.now().toString()); 
+		messageQueue.add(msg);
+		System.out.println("CLIENT = Message to server: " + gson.toJson(msg));
+		sendMessage(msg);
 	}
 
 	@OnOpen
 	public void open(Session session) {
 		System.out.println("SERVER = Client(" + session.getId() + ") connected!");
 		clientPool.add(session);
-		sendMessage(new Message<>("history", messageQueue));
-		sendMessage(new Message<>("client-count", clientPool.size()));
+		sendMessage(new ServerMessage<Queue<ClientMessage>>("history", messageQueue));
+		sendMessage(new ServerMessage<Set<Session>>("client-count", clientPool.size());
 	}
 
 	@OnClose
 	public void close(Session session, CloseReason reason) {
 		System.out.println("SERVER = Client(" + session.getId() + ") closed: " + reason.getCloseCode().toString());
 		clientPool.remove(session);
-		sendMessage(new Message<>("client-count", clientPool.size()));
+		sendMessage(new ServerMessage<>("client-count", clientPool.size()));
 	}
 
 	@OnError
