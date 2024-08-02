@@ -6,7 +6,7 @@ async function connect() {
 		.then(response => response.json())
 		.then(data => data.serverIp)
 		.catch(error => {
-			console.error('Error: ' + error)
+			console.error(`Error: ' ${error}`)
 			return 'localhost'
 		})
 
@@ -15,10 +15,10 @@ async function connect() {
 	socket.onmessage = (event) => {
 		const message = JSON.parse(event.data.replace(/^"|"$/g, '').replace(/\\"/g, '"'))
 		switch (message.type) {
-			case 'message':
-				displayMessage(message.content)
+			case 'message-data':
+				displayMessage(message)
 				break;
-			case 'history':
+			case 'history-list':
 				clearMessages()
 				for (const text of message.content) {
 					displayMessage(text)
@@ -45,27 +45,29 @@ async function connect() {
 	}
 }
 
-const { DateTime } = luxon
 const ballonContainer = document.querySelector("#balloon-container")
 let balloon
+
+function formatISODate(isoString) {
+    const date = new Date(isoString);
+
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // January is 0!
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return `${day}/${month} ${hours}:${minutes}`;
+}
 
 function displayMessage(message) {
 
 	balloon = document.createElement("div")
 	balloon.classList.add("balloon")
 
-	appendBalloonItem("client-id", `Guest ${message.clientId}`)
-	appendBalloonItem("text", message.text)
-
-	const timeZoneMatch = message.datetime.match(/\[(.*?)\]$/);
-	const timeZone = timeZoneMatch ? timeZoneMatch[1] : 'UTC';
-	// Removendo a parte do fuso horário para parsear a string ISO
-	const isoString = message.datetime.replace(/\[.*?\]$/, '');
-	// Parse the ZonedDateTime string using Luxon
-	const zonedDateTime = DateTime.fromISO(isoString, { zone: timeZone }).toFormat('dd/MM HH:mm');
+	appendBalloonItem("client-id", `Guest ${message.connectionId}`)
+	appendBalloonItem("text", message.content)
+	appendBalloonItem("datetime", formatISODate(message.dateTime))
 	
-	appendBalloonItem("datetime", zonedDateTime)
-
 	ballonContainer.appendChild(balloon)
 	ballonContainer.scrollTop = ballonContainer.scrollHeight
 }

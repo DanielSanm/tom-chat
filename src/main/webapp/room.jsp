@@ -83,16 +83,6 @@ header #date {
 	z-index: 1;
 }
 
-#text-box {
-	width: 100%;
-	padding: 6px;
-	border: 2px solid #D3D3D3;
-	border-radius: 5px;
-	margin-top: 10px;
-	border-radius: 5px;
-	z-index: 2;
-}
-
 .balloon {
 	display: flex;
 	flex-direction: column;
@@ -110,13 +100,29 @@ header #date {
 }
 
 .balloon #text {
-	font-weight: 500;
+	font-weight: 400;
 }
 
 .balloon #datetime {
 	font-size: 0.75rem;
 	text-align: end;
 }
+
+.notification {
+	padding: 5px;
+	background:
+}
+
+#text-box {
+	width: 100%;
+	padding: 6px;
+	border: 2px solid #D3D3D3;
+	border-radius: 5px;
+	margin-top: 10px;
+	border-radius: 5px;
+	z-index: 2;
+}
+
 </style>
 <body>
 	<main id="container">
@@ -133,15 +139,11 @@ header #date {
 		</header>
 
 		<section id="balloon-container">
-			<!-- <div class="balloon">
-				<span id="client-id">Client 01</span>
-				<span id="text">ola tudo bem!</span>
-				<span id="datetime">02/08 11:50</span>
-			</div> -->
+			<div class="notification">test</div>
 		</section>
 
 		<input placeholder="type something..." id="text-box" type="text" />
-		<script type="text/javascript" src="js/libs/luxon.min.js"></script>
+		<script type="text/javascript" src="js/libs/luxon/luxon.min.js"></script>
 		<script type="text/javascript" src="js/webSocketClient.js"></script>
 	</main>
 </body>
