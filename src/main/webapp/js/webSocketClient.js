@@ -19,7 +19,7 @@ async function connect() {
 				displayMessage(message)
 				break;
 			case 'history-list':
-				clearMessages()
+				//clearMessages()
 				for (const text of message.content) {
 					displayMessage(text)
 				}

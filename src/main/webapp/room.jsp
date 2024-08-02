@@ -109,8 +109,12 @@ header #date {
 }
 
 .notification {
-	padding: 5px;
-	background:
+	padding: 0 15px;
+	background: #808080;
+	color: white;
+	border-radius: 10px;
+	font-size: 0.75rem;
+	align-self: center;
 }
 
 #text-box {
@@ -139,7 +143,7 @@ header #date {
 		</header>
 
 		<section id="balloon-container">
-			<div class="notification">test</div>
+			<div class="notification">Client 1 left!</div>
 		</section>
 
 		<input placeholder="type something..." id="text-box" type="text" />
