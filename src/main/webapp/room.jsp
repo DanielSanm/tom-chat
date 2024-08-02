@@ -75,7 +75,7 @@ header #date {
 	position: absolute;
     top: 0;
     left: 0;
-	opacity: 0.4;
+	opacity: 0.35;
 	background-image: url('assets/apache_tomcat_logo.svg');
 	background-repeat: no-repeat;
 	background-position: center;
@@ -90,6 +90,7 @@ header #date {
 	border-radius: 5px;
 	margin-top: 10px;
 	border-radius: 5px;
+	z-index: 2;
 }
 
 .balloon {

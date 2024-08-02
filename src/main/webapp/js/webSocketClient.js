@@ -1,8 +1,17 @@
 let socket
 const ballonContainer = document.querySelector("#balloon-container")
 
-function connect() {
-	socket = new WebSocket("ws://10.100.101.12:8080/tomchat/websocket")
+async function connect() {
+	
+	const serverIp = await fetch('/tomchat/env')
+					.then(response => response.json())
+					.then(data => data.serverIp)
+					.catch(error => {
+						console.error('Error: ' + error)
+						return 'localhost'
+					})
+	
+	socket = new WebSocket(`ws://${serverIp}:8080/tomchat/websocket`)
 
 	socket.onmessage = (event) => {
 		const message = JSON.parse(event.data.replace(/^"|"$/g, '').replace(/\\"/g, '"'))
