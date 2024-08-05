@@ -137,7 +137,7 @@ header #date {
 			</div>
 			<div id="clients-counter">
 				<span id="gif-light"><img src="assets/green_light.gif"
-					width="15px" /></span> Online users: <span id="user-count"></span>
+					width="15px" /></span> Online users: <span id="user-count">0</span>
 			</div>
 			<div id="date"></div>
 		</header>

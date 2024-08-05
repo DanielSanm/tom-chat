@@ -3,11 +3,21 @@ let socket
 async function connect() {
 
 	const serverIp = await fetch('/tomchat/env')
-		.then(response => response.json())
-		.then(data => data.serverIp)
+		.then(response => {
+			if (!response.ok) {
+				return response.text().then(text => { throw new Error(text) })
+			}
+			return response.json()
+		})
+		.then(data => {
+			return data.serverIp
+		})
 		.catch(error => {
-			console.error(`Error: ' ${error}`)
-			return 'localhost'
+			console.error(`Error: ${error.message}`)
+
+			document.open()
+			document.write(error.message)
+			document.close()
 		})
 
 	socket = new WebSocket(`ws://${serverIp}:8080/tomchat/websocket`)

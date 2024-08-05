@@ -16,9 +16,16 @@ public class EnvServlet extends HttpServlet {
 	@Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String ipAddress = Config.getProperty("serverIp");
-        resp.setContentType("application/json");
+        
+        if (ipAddress == null || ipAddress.isEmpty()) {
+        	resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server ip not found or not configured.");
+        	return;
+        }
+        resp.setStatus(HttpServletResponse.SC_OK);
+    	resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         String json = String.format("{\"serverIp\":\"%s\"}", ipAddress);
         resp.getWriter().write(json);
+        
     }
 }
