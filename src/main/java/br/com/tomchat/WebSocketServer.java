@@ -22,11 +22,12 @@ import jakarta.websocket.server.ServerEndpoint;
 public class WebSocketServer {
 
 	private static Set<Session> clientPool = new CopyOnWriteArraySet<>();
-	public static Queue<Message<String>> messageTextQueue = new ConcurrentLinkedQueue<>();
+	public static Queue<Message<String>> timeline = new ConcurrentLinkedQueue<>();
 	private final Gson gson = new Gson();
 
 	public <T> void broadcast(Message<T> message) {
 		for (Session session : clientPool) {
+			
 			try {
 				String json = gson.toJson(message);
 				System.out.println("SERVER = " + json);
@@ -45,23 +46,28 @@ public class WebSocketServer {
 	@OnMessage
 	public void messageReceiver(String message, Session session) {
 		var msg = createMessage(session.getId(), Message.DATA, message, Context.CLIENT);
-		messageTextQueue.add(msg);
+		timeline.add(msg);
 		broadcast(msg);
 	}
 
 	@OnOpen
 	public void open(Session session) {
 		System.out.println("SERVER = Client(" + session.getId() + ") connected!");
+		var msg = createMessage(session.getId(), Message.CLIENT_ENTRY, "Client " + session.getId() + " has entered!", Context.CLIENT);
 		clientPool.add(session);
-		broadcast(createMessage(session.getId(), Message.HISTORY_LIST,  messageTextQueue, Context.SERVER));
+		broadcast(createMessage(session.getId(), Message.HISTORY_LIST,  timeline, Context.SERVER));
 		broadcast(createMessage(session.getId(), Message.CLIENT_COUNT, clientPool.size(), Context.SERVER));
+		broadcast(msg);
+		timeline.add(msg);
 	}
 
 	@OnClose
 	public void close(Session session, CloseReason reason) {
 		System.out.println("SERVER = Client(" + session.getId() + ") disconnected: " + reason.getCloseCode().toString());
+		var msg = createMessage(session.getId(), Message.CLIENT_EXIT, "Client " + session.getId() + " has left!", Context.CLIENT);
 		clientPool.remove(session);
-		broadcast(createMessage(session.getId(), Message.CLIENT_EXIT, session.getId(), Context.CLIENT));
+		timeline.add(msg);
+		broadcast(msg);
 		broadcast(createMessage(session.getId(), Message.CLIENT_COUNT, clientPool.size(), Context.SERVER));
 	}
 

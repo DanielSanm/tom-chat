@@ -6,6 +6,7 @@ public class Message<T> {
 	public static final String CLIENT_COUNT = "client-count";
 	public static final String DATA = "message-data";
 	public static final String CLIENT_EXIT = "client-exit";
+	public static final String CLIENT_ENTRY = "client-entry";
 
 	private String connectionId;
 	private String type;

@@ -73,8 +73,8 @@ header #date {
 	width: 100%;
 	height: 100%;
 	position: absolute;
-    top: 0;
-    left: 0;
+	top: 0;
+	left: 0;
 	opacity: 0.35;
 	background-image: url('assets/apache_tomcat_logo.svg');
 	background-repeat: no-repeat;
@@ -96,7 +96,6 @@ header #date {
 
 .balloon #client-id {
 	font-size: 0.75rem;
-	
 }
 
 .balloon #text {
@@ -115,6 +114,8 @@ header #date {
 	border-radius: 10px;
 	font-size: 0.75rem;
 	align-self: center;
+	margin: 5px 0;
+	z-index: 2;
 }
 
 #text-box {
@@ -126,28 +127,24 @@ header #date {
 	border-radius: 5px;
 	z-index: 2;
 }
-
 </style>
 <body>
 	<main id="container">
 		<header>
 			<div id="logo">
-				<img id="tomcat-img" src="assets/apache_tomcat_logo.svg" /> 
-				<span><strong>Tom Chat</strong></span>
+				<img id="tomcat-img" src="assets/apache_tomcat_logo.svg" /> <span><strong>Tom
+						Chat</strong></span>
 			</div>
 			<div id="clients-counter">
-				<span id="gif-light"><img src="assets/green_light.gif" width="15px" /></span>
-				Online users: <span id="user-count">1</span>
+				<span id="gif-light"><img src="assets/green_light.gif"
+					width="15px" /></span> Online users: <span id="user-count"></span>
 			</div>
 			<div id="date"></div>
 		</header>
 
-		<section id="balloon-container">
-			<div class="notification">Client 1 left!</div>
-		</section>
+		<section id="balloon-container"></section>
 
 		<input placeholder="type something..." id="text-box" type="text" />
-		<script type="text/javascript" src="js/libs/luxon/luxon.min.js"></script>
 		<script type="text/javascript" src="js/webSocketClient.js"></script>
 	</main>
 </body>

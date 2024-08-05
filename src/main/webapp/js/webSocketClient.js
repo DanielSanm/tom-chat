@@ -20,9 +20,11 @@ async function connect() {
 				break;
 			case 'history-list':
 				//clearMessages()
-				for (const text of message.content) {
-					displayMessage(text)
-				}
+				historyHandler(message.content)
+				break;
+			case 'client-entry':
+			case 'client-exit':
+				displayNotification(message.content)
 				break;
 			case 'client-count':
 				document.querySelector('#user-count').textContent = message.content
@@ -48,6 +50,22 @@ async function connect() {
 const ballonContainer = document.querySelector("#balloon-container")
 let balloon
 
+function historyHandler(list) {
+	for (const item of list) {
+		switch (item.type) {
+			case 'client-entry':
+			case 'client-exit':
+				displayNotification(item.content)
+				break;
+			case 'message-data':
+				displayMessage(item)
+				break;
+			default:
+				break;
+		}
+	}
+}
+
 function formatISODate(isoString) {
     const date = new Date(isoString);
 
@@ -57,6 +75,15 @@ function formatISODate(isoString) {
     const minutes = String(date.getMinutes()).padStart(2, '0');
 
     return `${day}/${month} ${hours}:${minutes}`;
+}
+
+function displayNotification(content) {
+	const notification = document.createElement("div")
+	notification.classList.add("notification")
+	notification.innerText = content
+	
+	ballonContainer.appendChild(notification)
+	ballonContainer.scrollTop = ballonContainer.scrollHeight
 }
 
 function displayMessage(message) {
