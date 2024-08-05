@@ -53,7 +53,7 @@ public class WebSocketServer {
 	@OnOpen
 	public void open(Session session) {
 		System.out.println("SERVER = Client(" + session.getId() + ") connected!");
-		var msg = createMessage(session.getId(), Message.CLIENT_ENTRY, "Client " + session.getId() + " has entered!", Context.CLIENT);
+		var msg = createMessage(session.getId(), Message.CLIENT_ENTRY, "Guest " + session.getId() + " has entered!", Context.CLIENT);
 		clientPool.add(session);
 		broadcast(createMessage(session.getId(), Message.HISTORY_LIST,  timeline, Context.SERVER));
 		broadcast(createMessage(session.getId(), Message.CLIENT_COUNT, clientPool.size(), Context.SERVER));
@@ -64,7 +64,7 @@ public class WebSocketServer {
 	@OnClose
 	public void close(Session session, CloseReason reason) {
 		System.out.println("SERVER = Client(" + session.getId() + ") disconnected: " + reason.getCloseCode().toString());
-		var msg = createMessage(session.getId(), Message.CLIENT_EXIT, "Client " + session.getId() + " has left!", Context.CLIENT);
+		var msg = createMessage(session.getId(), Message.CLIENT_EXIT, "Guest " + session.getId() + " has left!", Context.CLIENT);
 		clientPool.remove(session);
 		timeline.add(msg);
 		broadcast(msg);
