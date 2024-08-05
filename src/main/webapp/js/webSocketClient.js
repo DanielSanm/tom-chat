@@ -18,7 +18,12 @@ async function connect() {
 			document.open()
 			document.write(error.message)
 			document.close()
+			return null
 		})
+
+	if (serverIp === null) return
+
+	clock()
 
 	socket = new WebSocket(`ws://${serverIp}:8080/tomchat/websocket`)
 
@@ -29,7 +34,7 @@ async function connect() {
 				displayMessage(message)
 				break;
 			case 'history-list':
-				//clearMessages()
+				clearMessages()
 				historyHandler(message.content)
 				break;
 			case 'client-entry':
@@ -126,8 +131,6 @@ function clock() {
 		document.querySelector("header #date").textContent = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`
 	}, 1000)
 }
-
-clock()
 
 document.querySelector("#text-box").addEventListener("keydown", (e) => {
 	if (e.key === "Enter") {

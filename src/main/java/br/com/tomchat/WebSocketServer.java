@@ -56,8 +56,8 @@ public class WebSocketServer {
 		var msg = createMessage(session.getId(), Message.CLIENT_ENTRY, "Guest " + session.getId() + " has entered!", Context.CLIENT);
 		clientPool.add(session);
 		broadcast(createMessage(session.getId(), Message.HISTORY_LIST,  timeline, Context.SERVER));
-		broadcast(createMessage(session.getId(), Message.CLIENT_COUNT, clientPool.size(), Context.SERVER));
 		broadcast(msg);
+		broadcast(createMessage(session.getId(), Message.CLIENT_COUNT, clientPool.size(), Context.SERVER));
 		timeline.add(msg);
 	}
 
