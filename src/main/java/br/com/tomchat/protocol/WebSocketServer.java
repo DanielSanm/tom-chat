@@ -1,15 +1,18 @@
-package br.com.tomchat;
+package br.com.tomchat.protocol;
 
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import com.google.gson.Gson;
 
+import br.com.tomchat.models.User;
 import jakarta.websocket.CloseReason;
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnError;
@@ -20,10 +23,11 @@ import jakarta.websocket.server.ServerEndpoint;
 
 @ServerEndpoint("/websocket")
 public class WebSocketServer {
-
-	private static Set<Session> clientPool = new CopyOnWriteArraySet<>();
-	public static Queue<Message<String>> timeline = new ConcurrentLinkedQueue<>();
 	private final Gson gson = new Gson();
+	
+	private final Set<Session> clientPool = new CopyOnWriteArraySet<>();
+	private final Queue<Message<String>> timeline = new ConcurrentLinkedQueue<>();
+	public static final List<User> userList = new CopyOnWriteArrayList<>(); 
 
 	public <T> void broadcast(Message<T> message) {
 		for (Session session : clientPool) {

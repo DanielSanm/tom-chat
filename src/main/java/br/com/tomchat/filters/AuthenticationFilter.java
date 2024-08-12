@@ -1,4 +1,4 @@
-package br.com.tomchat;
+package br.com.tomchat.filters;
 
 import java.io.IOException;
 
@@ -22,12 +22,11 @@ public class AuthenticationFilter implements Filter {
 
 		HttpSession session = req.getSession(false);
 		boolean loggedIn = (session != null && session.getAttribute("user") != null);
-		boolean loginRequest = req.getRequestURI().equals(req.getContextPath() + "/login.jsp");
 
-		if (loggedIn || loginRequest) {
-			chain.doFilter(request, response); // Usuário autenticado ou acessando página de login
+		if (loggedIn) {
+			chain.doFilter(request, response); // authenticated user
 		} else {
-			res.sendRedirect(req.getContextPath() + "/login.jsp"); // Redireciona para a página de login
+			res.sendRedirect(req.getContextPath() + "/signin"); // redirect to login page
 		}
 	}
 

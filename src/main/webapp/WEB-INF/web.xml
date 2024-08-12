@@ -5,18 +5,27 @@
 
 	<filter>
 		<filter-name>AuthenticationFilter</filter-name>
-		<filter-class>br.com.tomchat.AuthenticationFilter</filter-class>
+		<filter-class>br.com.tomchat.filters.AuthenticationFilter</filter-class>
 	</filter>
 
 	<filter-mapping>
 		<filter-name>AuthenticationFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-		<dispatcher>REQUEST</dispatcher>
+		<url-pattern>/room/*</url-pattern>
 	</filter-mapping>
-
+	
 	<filter-mapping>
 		<filter-name>AuthenticationFilter</filter-name>
-		<url-pattern>/login</url-pattern>
-		<dispatcher>ERROR</dispatcher>
+		<url-pattern>/env</url-pattern>
 	</filter-mapping>
+	
+	<!-- 
+	<servlet>
+		<servlet-name>LoginPage</servlet-name>
+		<jsp-file>/login.jsp</jsp-file>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LoginPage</servlet-name>
+		<url-pattern>/login</url-pattern>
+	</servlet-mapping>
+	 -->
 </web-app>

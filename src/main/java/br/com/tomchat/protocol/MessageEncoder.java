@@ -1,4 +1,4 @@
-package br.com.tomchat;
+package br.com.tomchat.protocol;
 
 import com.google.gson.Gson;
 

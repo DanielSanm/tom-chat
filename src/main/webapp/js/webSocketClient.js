@@ -1,7 +1,6 @@
 let socket
 
 async function connect() {
-
 	const serverIp = await fetch('/tomchat/env')
 		.then(response => {
 			if (!response.ok) {

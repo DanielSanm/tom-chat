@@ -1,7 +1,8 @@
-package br.com.tomchat;
+package br.com.tomchat.servlets;
 
 import java.io.IOException;
 
+import br.com.tomchat.config.Config;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,6 +22,7 @@ public class EnvServlet extends HttpServlet {
         	resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Server ip not found or not configured.");
         	return;
         }
+        
         resp.setStatus(HttpServletResponse.SC_OK);
     	resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
